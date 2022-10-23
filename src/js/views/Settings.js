@@ -131,6 +131,29 @@ class Settings extends React.Component {
     );
   }
 
+  doJukeboxScan = () => {
+    const { pusherActions: { jukeboxScan } } = this.props;
+    JukeboxScan();
+  }
+
+  renderJukeboxScanButton = () => {
+    const {
+      ui: { processes },
+    } = this.props;
+
+    const loading = processes.jukebox_scan && processes.jukebox_scan.status === 'running';
+
+    return (
+      <Button
+        working={loading}
+        onClick={this.doJukeboxScan}
+        tracking={{ category: 'System', action: 'JukeboxScan' }}
+      >
+        <I18n path="settings.advanced.start_jukebox_scan" />
+      </Button>
+    );
+  }
+
   render = () => {
     const {
       mopidyActions: {
@@ -524,6 +547,7 @@ class Settings extends React.Component {
 
           <div className="field">
             {this.renderLocalScanButton()}
+            {this.renderJukeboxScanButton()}
             <Button
               type="destructive"
               working={mopidy.restarting}

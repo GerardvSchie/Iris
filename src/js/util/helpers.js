@@ -196,7 +196,8 @@ const sourceIcon = function (uri, source = null) {
     case 'm3u':
     case 'file':
       return 'folder';
-
+    case 'jukebox':
+      return 'jukebox';
     case 'gmusic':
       return 'google';
 

@@ -62,7 +62,7 @@ const PusherMiddleware = (function () {
         ));
       }
 
-    // Broadcast of an error
+      // Broadcast of an error
     } else if (message.error !== undefined) {
       store.dispatch(coreActions.handleException(
         `Pusher: ${message.error.message}`,
@@ -72,7 +72,7 @@ const PusherMiddleware = (function () {
           : null
         ),
       ));
-    // General broadcast received
+      // General broadcast received
     } else {
       const params = message.params ? message.params : {};
       switch (message.method) {
@@ -155,6 +155,41 @@ const PusherMiddleware = (function () {
             'local_scan',
             {
               level: 'error', content: 'Local scan failed', description: params.error, sticky: true,
+            },
+          ));
+          break;
+
+        // Jukebox scan
+        case 'jukebox_scan_started':
+          store.dispatch(uiActions.updateProcess(
+            'jukebox_scan', { content: 'Scanning local library' },
+          ));
+          break;
+        case 'jukebox_scan_updated':
+          store.dispatch(uiActions.updateProcess(
+            'jukebox_scan',
+            {
+              content: 'Scanning jukebox library',
+              data: {},
+              description: params.output,
+            },
+          ));
+          break;
+        case 'jukebox_scan_finished':
+          store.dispatch(uiActions.processFinished(
+            'jukebox_scan',
+            {
+              content: 'Jukebox scan finished',
+              description: params.output,
+              sticky: true,
+            },
+          ));
+          break;
+        case 'jukebox_scan_error':
+          store.dispatch(uiActions.processFinished(
+            'jukebox_scan',
+            {
+              level: 'error', content: 'Jukebox scan failed', description: params.error, sticky: true,
             },
           ));
           break;
@@ -536,9 +571,9 @@ const PusherMiddleware = (function () {
         next(action);
         break;
 
-        /**
-       * Pinned uris
-       * */
+      /**
+     * Pinned uris
+     * */
 
       case 'PUSHER_GET_PINNED':
         request(store, 'get_pinned')
@@ -688,13 +723,13 @@ const PusherMiddleware = (function () {
               }));
             }
           },
-          (error) => {
-            store.dispatch(uiActions.removeProcess(notification_key));
-            store.dispatch(coreActions.handleException(
-              'Could not run command',
-              error,
-            ));
-          });
+            (error) => {
+              store.dispatch(uiActions.removeProcess(notification_key));
+              store.dispatch(coreActions.handleException(
+                'Could not run command',
+                error,
+              ));
+            });
         break;
       }
 

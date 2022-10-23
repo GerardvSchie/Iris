@@ -55,7 +55,9 @@ class Browse extends React.Component {
           case 'Local media':
             subdirectory.icons = ['/iris/assets/backgrounds/browse-folders.jpg'];
             break;
-
+          case 'Jukebox':
+            subdirectory.icons = ['/iris/assets/backgrounds/browse-jukebox.jpg'];
+            break;
           case 'Spotify':
           case 'Spotify Browse':
           case 'Spotify Web Browse':
@@ -86,11 +88,11 @@ class Browse extends React.Component {
           case 'SomaFM':
             subdirectory.icons = ['/iris/assets/backgrounds/browse-somafm.jpg'];
             break;
-			
-	  case 'Jellyfin':
+
+          case 'Jellyfin':
             subdirectory.icons = ['/iris/assets/backgrounds/browse-jellyfin.jpg'];
             break;
-			
+
           case 'Podcasts':
             subdirectory.icons = ['/iris/assets/backgrounds/browse-podcasts.jpg'];
             break;
@@ -110,7 +112,7 @@ class Browse extends React.Component {
             break;
 
           default:
-            subdirectory.icons = ['/iris/assets/backgrounds/browse-default.jpg'];
+            subdirectory.icons = ['/iris/assets/backgrounds/browse-folders.jpg'];
         }
 
         grid_items.push({

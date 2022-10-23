@@ -54,6 +54,12 @@ export default function reducer(mopidy = {}, action) {
     case 'MOPIDY_LOCAL_SCAN_FINISHED':
       return { ...mopidy, local_scan_running: false };
 
+    case 'MOPIDY_JUKEBOX_SCAN_STARTED':
+      return { ...mopidy, jukebox_scan_running: true };
+
+    case 'MOPIDY_JUKEBOX_SCAN_FINISHED':
+      return { ...mopidy, jukebox_scan_running: false };
+
     /**
      * State-oriented actions
      * */

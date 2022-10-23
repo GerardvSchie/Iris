@@ -541,6 +541,37 @@ class IrisCore(pykka.ThreadingActor):
             )
 
     ##
+    # Run a mopidy jukebox scan
+    # Essetially an alias to "mopidyctl jukbox scan"
+    ##
+    def jukebox_scan(self, *args, **kwargs):
+        callback = kwargs.get("callback", False)
+        ioloop = kwargs.get("ioloop", False)
+
+        # Trigger the action
+        IrisSystemThread("jukebox_scan", ioloop, self.jukebox_scan_callback).start()
+
+        self.broadcast(data={"method": "jukebox_scan_started"})
+
+        response = {"message": "Jukebox scan started"}
+        if callback:
+            callback(response)
+        else:
+            return response
+
+    def jukebox_scan_callback(self, response, error, update):
+        if error:
+            self.broadcast(data={"method": "jukebox_scan_error", "params": error})
+        elif update:
+            self.broadcast(
+                data={"method": "jukebox_scan_updated", "params": update}
+            )
+        else:
+            self.broadcast(
+                data={"method": "jukebox_scan_finished", "params": response}
+            )
+
+    ##
     # Spotify Radio
     #
     # Accepts seed URIs and creates radio-like experience. When our
