@@ -1,4 +1,6 @@
 #!/bin/bash
 
+cd "${0%/*}"
+
 npm run build:prod
-python3 ./setup.py develop
+sudo python3 ./setup.py develop
